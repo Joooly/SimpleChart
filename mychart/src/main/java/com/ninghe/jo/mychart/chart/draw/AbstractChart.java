@@ -102,7 +102,7 @@ public abstract class AbstractChart {
             if(isShowY){
                 canvas.drawLine(yToLeft,height-xToBottom-ySpace*i,yToLeft-spaceLineWidth,height-xToBottom-ySpace*i,paint);// 绘制Y轴标杆
             }
-            String yLabel=String.valueOf(yMinValue+ySpaceValue*i);
+            String yLabel=ChartUtils.decimalNum(yMinValue+ySpaceValue*i);
             paint.getTextBounds(yLabel,0,yLabel.length(),rect);
             canvas.drawText(yLabel,yToLeft-spaceLineWidth-spaceToLabel-rect.width(),height-xToBottom-ySpace*i,paint);// 绘制Y轴标签
             maxWidth=Math.max(maxWidth,rect.width());
@@ -119,15 +119,17 @@ public abstract class AbstractChart {
             maxHeight=Math.max(maxHeight,rect.height());
         }
 
-        paint.setTextSize(ChartUtils.convertSize(context,defaultRenderer.getAxisNameTextSize()));
+        if(defaultRenderer.isShowAxisName()){
+            paint.setTextSize(ChartUtils.convertSize(context,defaultRenderer.getAxisNameTextSize()));
 
-        String axisXName=defaultRenderer.getAxisXName();
-        paint.getTextBounds(axisXName,0,axisXName.length(),rect);
-        canvas.drawText(axisXName,(width-yToLeft)/2+yToLeft,height-xToBottom+spaceLineWidth+maxHeight+rect.height(),paint);// 绘制X轴名称
+            String axisXName=defaultRenderer.getAxisXName();
+            paint.getTextBounds(axisXName,0,axisXName.length(),rect);
+            canvas.drawText(axisXName,(width-yToLeft)/2+yToLeft,height-xToBottom+spaceLineWidth+maxHeight+rect.height(),paint);// 绘制X轴名称
 
-        String axisYName=defaultRenderer.getAxisYName();
-        paint.getTextBounds(axisYName,0,axisYName.length(),rect);
-        drawAngleText(canvas,axisYName,yToLeft-spaceLineWidth-maxWidth-rect.height(),(height-xToBottom)/2,paint,-90);// 绘制Y轴名称
+            String axisYName=defaultRenderer.getAxisYName();
+            paint.getTextBounds(axisYName,0,axisYName.length(),rect);
+            drawAngleText(canvas,axisYName,yToLeft-spaceLineWidth-maxWidth-rect.height(),(height-xToBottom)/2,paint,-90);// 绘制Y轴名称
+        }
 
     }
 
